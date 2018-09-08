@@ -40,11 +40,11 @@ model.add(Conv2D(filters=32, kernel_size=(3,3), padding='same', activation='relu
 model.add(Conv2D(filters=64, kernel_size=(2,2), padding='same', activation='relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.3))
-model.add(TimeDistributed(Bidirectional(LSTM(32, return_sequences=True))))
+model.add(TimeDistributed(Bidirectional(CuDNNLSTM(32, return_sequences=True))))
 # model.add(Dropout(0.1))
-model.add(TimeDistributed(Bidirectional(LSTM(24, return_sequences=True))))
+model.add(TimeDistributed(Bidirectional(CuDNNLSTM(24, return_sequences=True))))
 # model.add(Dropout(0.1))
-model.add(TimeDistributed(Bidirectional(LSTM(32))))
+model.add(TimeDistributed(Bidirectional(CuDNNLSTM(32))))
 model.add(Dropout(0.1))
 model.add(Flatten())
 model.add(Dense(8, activation='softmax'))
@@ -54,6 +54,6 @@ parallel_model.compile(loss='categorical_crossentropy', optimizer='adam', metric
 
 print(model.summary())
 
-history = parallel_model.fit(data_X_padded, one_hot_labels, epochs=20, batch_size=4096, validation_split=0.1, verbose=2)
+history = parallel_model.fit(data_X_padded, one_hot_labels, epochs=100, batch_size=4096, validation_split=0.1, verbose=2)
 
 model.save("quickdraw.h5")

@@ -86,8 +86,11 @@ def rdp_wrapper(strokes):
 
 def preprocess_strokes(strokes_input):
     strokes_coords_switched = switch_xy(strokes_input)
+    print("*1", strokes_coords_switched)
     strokes_coords_normalized = normalize_strokes(strokes_coords_switched)
+    print("*2", strokes_coords_normalized)
     strokes_rdp = rdp_wrapper(strokes_coords_normalized)
+    print("*3", strokes_rdp)
 
     inkarray = strokes_rdp
     stroke_lengths = [len(stroke[0]) for stroke in inkarray]
@@ -125,7 +128,6 @@ def load_model_keras():
 def predict():
 
     data = {"success": False}
-    print(flask.request.get_json())
     strokes = flask.request.get_json()["strokes"]
     inks = preprocess_strokes(strokes)
     print("predicting:")
